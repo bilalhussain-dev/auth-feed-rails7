@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   root "pages#index"
   resources :posts do
     resources :comments, only: [:create]
+    resources :likes, only: [:create]
+    delete 'likes', to: 'likes#destroy', as: 'unlike'
   end
 
 end
