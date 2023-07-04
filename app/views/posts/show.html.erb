@@ -1,0 +1,33 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @post %>
+
+<div>
+  <%= link_to "Back to posts", posts_path %>
+  <% if @post.user === current_user %>
+    <%= link_to "Edit this post", edit_post_path(@post) %>
+    <%= button_to "Destroy this post", @post, method: :delete %>
+<%end %>
+</div>
+
+<h3>Comments: </h3>
+<% @post.comments.each do |comment| %>
+  <div class="card p-2 my-1">
+    <strong><%= comment.content %></strong>
+    <% if comment.user === current_user %>
+      <span>Posted by: You</span>
+      <%else %>
+      <span>Posted by: <%= comment.user.email %></span>
+    <%end %>
+  </div>
+<%end %>
+
+<% if current_user %>
+  <div class="container">
+    <%= form_with(model: [ @post, Comment.new ]) do |form| %>
+      <%= form.label :content, "Add a comment:" %> <br>
+      <%= form.text_area :content, rows: 4 %>
+      <%= form.submit "Post Comment" %>
+    <% end %>
+  </div>
+<%end %>
